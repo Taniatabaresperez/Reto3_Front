@@ -1,7 +1,7 @@
 function datosCliente() {
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Client/all",
+        url: "http://129.151.123.97:8080/api/Client/all",
         type: 'GET',
 
         success: function (response) {
@@ -17,7 +17,7 @@ function datosCliente() {
 function datoEspCliente(idDato) {
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Client/" + idDato,
+        url: "http://129.151.123.97:8080/api/Client/" + idDato,
         type: 'GET',
         success: function (response) {
 
@@ -46,7 +46,7 @@ function crearC() {
     $.ajax({
         dataType: 'JSON',
         data: JSON.stringify(datos),
-        url: "http://localhost:8080/api/Client/save",
+        url: "http://129.151.123.97:8080/api/Client/save",
         contentType: "application/JSON; charset=utf-8",
         type: 'POST',
 
@@ -77,7 +77,7 @@ function actualizarCliente() {
 
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Client/update",
+        url: "http://129.151.123.97:8080/api/Client/update",
         data: JSON.stringify(datos),
         contentType: "application/json",
         type: 'PUT',
@@ -104,7 +104,7 @@ function borrarCliente(idCliente) {
     $.ajax({
         dataType: 'JSON',
         data: dataToSend,
-        url: "http://localhost:8080/api/Client/" + idCliente,
+        url: "http://129.151.123.97:8080/api/Client/" + idCliente,
         type: 'DELETE',
         contentType: 'application/JSON',
 
@@ -152,7 +152,7 @@ function mostrarTabla(misDatos) {
         let selecciona = "<select>";
         for (let j = 0; j < misDatos[i].reservations.length; j++) {
             const element = misDatos[i].reservations[j];
-            selecciona += `<option value="${element.idReservation}"> ${element.startDate} </option>`;
+            selecciona += `<option value="${element.idReservation}"> ${element.idReservation} </option>`;
         }
         selecciona += "</select>"
         tabla += `<td>${selecciona}</td>`
@@ -165,7 +165,3 @@ function mostrarTabla(misDatos) {
     tabla += "</table>";
     $("#datos2").html(tabla);
 }
-
-$(document).ready(function(){
-    datosCliente();
-})

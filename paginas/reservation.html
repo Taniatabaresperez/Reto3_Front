@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title></title>
 
     <style>
-
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
     </style>
 
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
-   
+
 </head>
+
 <body>
 
     <h1>Servicios médicos especializados</h1>
     <h3>Formulario Reservaciones</h3>
-    
-    
-    <input type="date" id="startDate" placeholder="Fecha de inicio"><br>
-    <input type="date" id="devolutionDate" placeholder="Fecha de devolucion"><br>
-    <select id="doctor" class="select-container"></select>
-    <select id="client" class="select-container"></select>
-    <br>
-    <button onclick="crearR()">Agregar</button>
-    <button onclick="datosReservacion()">Ver datos</button>
-    <button onclick="actualizarRes()">Actualizar</button>
 
     <div>
-        
+        <type="number" id="idReservation" placeholder="Id"></type>
+            <input type="date" id="startDate" placeholder="Fecha de inicio"><br>
+            <input type="date" id="devolutionDate" placeholder="Fecha de devolucion"><br>
+            <select id="doctor" class="select-container">
+                <option>Seleccione un Doctor...</option>
+            </select> <button onclick="traerDoctor()">Cargar Doctores</button><br>
+            <select id="client" class="select-container">
+                <option>Seleccione un Cliente...</option>
+            </select> <button onclick="traerCliente()">Cargar clientes</button><br>
+            <br>
+            <button onclick="crearR()">Agregar</button>
+            <button onclick="datosReservacion()">Ver datos</button>
+            <button onclick="actualizarRes()">Actualizar</button>
+    </div>
+    <div>
+
         <table>
             <thead>
+                <th>Id</th>
                 <th>Fecha de inicio</th>
                 <th>Fecha de devolución</th>
                 <th>Estado</th>
@@ -44,9 +52,9 @@
             <tbody id="datos4">
                 <br>
             </tbody>
-            
+
         </table>
-        
+
     </div>
 
     <ul>
@@ -56,6 +64,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script type="text/javascript" src="../scriptReservation.js"></script>
-    
+
 </body>
+
 </html>

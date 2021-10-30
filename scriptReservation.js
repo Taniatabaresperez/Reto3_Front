@@ -2,7 +2,7 @@ function datosReservacion() {
 
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Reservation/all",
+        url: "http://129.151.123.97:8080/api/Reservation/all",
         type: 'GET',
 
         success: function (response) {
@@ -19,24 +19,21 @@ function datoEspReservacion(idDato) {
 
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Reservation/" + idDato,
+        url: "http://129.151.123.97:8080/api/Reservation/" + idDato,
         type: 'GET',
         success: function (response) {
             console.log(response);
 
             $("#idReservation").val(response.idReservation);
             $("#idReservation").attr("readonly", true);
-            $("#startDate").val(response.startDate);
-            $("#devolutionDate").val(response.devolutionDate);
+            $("#startDate").val(response.startDate.split("T")[0]);
+            $("#devolutionDate").val(response.devolutionDate.split("T")[0]);
             $("#status").val(response.status);
+            $("#doctor").empty();
+            $("#doctor").append(`<option value = '${response.doctor.id}'> ${response.doctor.name}</option>`);
+            $("#client").empty();
+            $("#client").append(`<option value = '${response.client.idClient}'> ${response.client.name}</option>`);
 
-            let dato = document.getElementById("doctor");
-            dato.selectedIndex = response.doctor.id;
-            console.log(dato[response.doctor.id])
-
-            let dato2 = document.getElementById("client");
-            dato2.selectedIndex = response.client.idClient;
-            console.log(dato2[response.client.idClient])
         },
 
         error: function (jqXHR, textStatus, errorThrown) {
@@ -49,11 +46,10 @@ async function traerDoctor() {
     
     var doctor = await $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Doctor/all",
+        url: "http://129.151.123.97:8080/api/Doctor/all",
         type: 'GET',
         
-    });
-    console.log(doctor);   
+    });  
     for (let i = 0; i < doctor.length; i++) {
         let option = document.createElement("option");
         option.setAttribute("class", "select-item");
@@ -67,7 +63,7 @@ async function traerCliente() {
     
     var client = await $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Client/all",
+        url: "http://129.151.123.97:8080/api/Client/all",
         type: 'GET',
         
     }); 
@@ -88,11 +84,12 @@ function crearR() {
         doctor: {id:Number.parseInt($("#doctor").val())},
         client:{idClient:Number.parseInt($("#client").val())},
     }
+    console.log(datos)
 
     $.ajax({
         dataType: 'JSON',
         data: JSON.stringify(datos),
-        url: "http://localhost:8080/api/Reservation/save",
+        url: "http://129.151.123.97:8080/api/Reservation/save",
         contentType: "application/json; charset=utf-8",
         type: 'POST',
 
@@ -124,7 +121,7 @@ function actualizarRes() {
         dataType: 'JSON',
         data: JSON.stringify(datos),
         contentType: "application/json; charset=utf-8",
-        url: "http://localhost:8080/api/Reservation/update",
+        url: "http://129.151.123.97:8080/api/Reservation/update",
         type: 'PUT',
 
         statusCode: {
@@ -151,7 +148,7 @@ function borrarReservacion(idRes) {
     $.ajax({
         dataType: 'json',
         data: JSON.stringify(da_to),
-        url: "http://localhost:8080/api/Reservation/" + idRes,
+        url: "http://129.151.123.97:8080/api/Reservation/" + idRes,
         type: 'DELETE',
         contentType: 'application/json',
 
@@ -180,12 +177,13 @@ function limpiarCampos() {
 }
 
 function mostrarTabla(misDatos) {
-
+    //console.log(misDatos)
     let tabla = "<table>";
     for (i = 0; i < misDatos.length; i++) {
         tabla += "<tr>";
-        tabla += "<td>" + misDatos[i].startDate+ "</td>";
-        tabla += "<td>" + misDatos[i].devolutionDate + "</td>";
+        tabla += "<td>" + misDatos[i].idReservation+ "</td>";
+        tabla += "<td>" + misDatos[i].startDate.split("T")[0]+ "</td>";
+        tabla += "<td>" + misDatos[i].devolutionDate.split("T")[0] + "</td>";
         tabla += "<td>" + misDatos[i].status + "</td>";
         tabla += "<td>" + misDatos[i].doctor.name + "</td>";
         tabla += "<td>" + misDatos[i].client.name + "</td>";
@@ -195,11 +193,10 @@ function mostrarTabla(misDatos) {
     }
     tabla += "</table>";
     $("#datos4").html(tabla);
-
+    
 }
 
 $(document).ready(function(){
     traerDoctor();
     traerCliente();
-    datosReservacion();
 })

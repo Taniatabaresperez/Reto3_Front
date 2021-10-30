@@ -1,7 +1,7 @@
 function datosDoctor() {
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Doctor/all",
+        url: "http://129.151.123.97:8080/api/Doctor/all",
         type: 'GET',
 
         success: function (response) {
@@ -17,7 +17,7 @@ function datosDoctor() {
 function datoEspDoc(idDato) {
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Doctor/" + idDato,
+        url: "http://129.151.123.97:8080/api/Doctor/" + idDato,
         type: 'GET',
         success: function (response) {
             console.log(response);
@@ -28,10 +28,8 @@ function datoEspDoc(idDato) {
             $("#department").val(response.department);
             $("#year").val(response.year);
             $("#description").val(response.description);
-
-            let dato = document.getElementById("specialty");
-            dato.selectedIndex = response.specialty.id;
-            console.log(dato[response.specialty.id])
+            $("#specialty").empty();
+            $("#specialty").append(`<option value = '${response.specialty.id}'> ${response.specialty.name}</option>`);
         },
 
         error: function (jqXHR, textStatus, errorThrown) {
@@ -44,7 +42,7 @@ async function traerSpecialty() {
     try {
         var specialty = await $.ajax({
             dataType: 'JSON',
-            url: "http://localhost:8080/api/Specialty/all",
+            url: "http://129.151.123.97:8080/api/Specialty/all",
             type: 'GET',
 
         });
@@ -68,10 +66,11 @@ function crearDoctor() {
         year: Number.parseInt($("#year").val()),
         description: $("#description").val(),
         specialty:{id:Number.parseInt($("#specialty").val())},
+        
     }
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Doctor/save",
+        url: "http://129.151.123.97:8080/api/Doctor/save",
         data: JSON.stringify(datos),
         contentType: "application/json; charset=utf-8",
         type: 'POST',
@@ -98,7 +97,8 @@ function actualizarDoctores() {
         name: $("#name").val(),
         department: $("#department").val(),
         year:  Number.parseInt($("#year").val()),
-        description: $("#description").val()
+        description: $("#description").val(),
+        specialty: {id:Number.parseInt($("#specialty").val())}
     }
 
     let dataToSend = JSON.stringify(datos)
@@ -106,7 +106,7 @@ function actualizarDoctores() {
         dataType: 'JSON',
         data: dataToSend,
         contentType: "application/json",
-        url: "http://localhost:8080/api/Doctor/update",
+        url: "http://129.151.123.97:8080/api/Doctor/update",
         type: 'PUT',
 
         statusCode: {
@@ -131,7 +131,7 @@ function borrarDoc(idDoctor) {
     $.ajax({
         dataType: 'JSON',
         data: dataToSend,
-        url: "http://localhost:8080/api/Doctor/" + idDoctor,
+        url: "http://129.151.123.97:8080/api/Doctor/" + idDoctor,
         type: 'DELETE',
         contentType: 'application/JSON',
 
@@ -179,7 +179,7 @@ function mostrarTabla(misDatos) {
         let selecciona = "<select>";
         for (let j = 0; j < misDatos[i].reservations.length; j++) {
             const element = misDatos[i].reservations[j];
-            selecciona += `<option value="${element.idReservation}"> ${element.startDate.split("T")[0]} </option>`;
+            selecciona += `<option value="${element.idReservation}"> ${element.idReservation} </option>`;
         }
         selecciona += "</select>"
         tabla += `<td>${selecciona}</td>`
@@ -195,6 +195,5 @@ function mostrarTabla(misDatos) {
 
 $(document).ready(function () {
     traerSpecialty();
-    datosDoctor();
 })
 

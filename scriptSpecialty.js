@@ -1,7 +1,7 @@
 function datosEspecialidad() {
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Specialty/all",
+        url: "http://129.151.123.97:8080/api/Specialty/all",
         type: 'GET',
 
         success: function (response) {
@@ -18,11 +18,9 @@ function datosEspecialidad() {
 function datoEspEspecialidad(idDato) {
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Specialty/" + idDato,
+        url: "http://129.151.123.97:8080/api/Specialty/" + idDato,
         type: 'GET',
         success: function (response) {
-            console.log(response);
-
             $("#id").val(response.id);
             $("#id").attr("readonly", true);
             $("#name").val(response.name);
@@ -37,7 +35,6 @@ function datoEspEspecialidad(idDato) {
 
 function crearE() {
     let datos = {
-        id: $("#id").val(),
         name: $("#name").val(),
         description: $("#description").val()
     }
@@ -45,7 +42,7 @@ function crearE() {
     $.ajax({
         dataType: 'JSON',
         data: JSON.stringify(datos),
-        url: "http://localhost:8080/api/Specialty/save",
+        url: "http://129.151.123.97:8080/api/Specialty/save",
         contentType: "application/JSON; charset=utf-8",
         type: 'POST',
 
@@ -69,15 +66,16 @@ function actualizarEsp() {
     let datos = {
         id: $("#id").val(),
         name: $("#name").val(),
-        description: $("#description").val()
+        description: $("#description").val(),
     }
+    console.log(datos)
 
     let dataToSend = JSON.stringify(datos);
     $.ajax({
         dataType: 'JSON',
         data: dataToSend,
         contentType: "application/JSON",
-        url: "http://localhost:8080/api/Specialty/update",
+        url: "http://129.151.123.97:8080/api/Specialty/update",
         type: 'PUT',
 
         statusCode: {
@@ -102,7 +100,7 @@ function borrarEsp(idEspecialidad) {
     $.ajax({
         dataType: 'JSON',
         data: dataToSend,
-        url: "http://localhost:8080/api/Specialty/" + idEspecialidad,
+        url: "http://129.151.123.97:8080/api/Specialty/" + idEspecialidad,
         type: 'DELETE',
         contentType: 'application/JSON',
 
@@ -128,7 +126,6 @@ function limpiarCampos() {
 }
 
 function mostrarTabla(misDatos) {
-    //console.log(misDatos)
     let tabla = "<table>";
     for (i = 0; i < misDatos.length; i++) {
         tabla += "<tr>";
@@ -151,7 +148,3 @@ function mostrarTabla(misDatos) {
     $("#datos").html(tabla);
 
 }
-
-$(document).ready(function(){
-    datosEspecialidad();
-})

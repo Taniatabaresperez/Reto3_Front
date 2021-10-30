@@ -22,13 +22,20 @@
     <h1>Servicios médicos especializados</h1>
     <h3>Formulario mensajes</h3>
 
-    <input type="text" id="messageText" placeholder="Añade un comentario"><br>
-    <select id="doctor" class="select-container"></select> <button onclick="traerDoctor()">Cargar Doctores</button><br>
-    <select id="client" class="select-container"></select> <button onclick="traerCliente()">Cargar clientes</button><br>
-    <br>
-    <button onclick="crearMen()">Agregar</button>
-    <button onclick="datosMensaje()">Ver datos</button>
-    <button onclick="actualizarMen()">Actualizar</button>
+    <div>
+        <type="number" id="idMessage" placeholder="Id"></type>
+            <input type="text" id="messageText" placeholder="Añade un comentario"><br>
+            <select id="doctor" class="select-container">
+                <option>Seleccione un Doctor...</option>
+            </select> <button onclick="traerDoctor()">Cargar Doctores</button><br>
+            <select id="client" class="select-container">
+                <option>Seleccione un Cliente...</option>
+            </select> <button onclick="traerCliente()">Cargar clientes</button><br>
+            <br>
+            <button onclick="crearMen()">Agregar</button>
+            <button onclick="datosMensaje()">Ver datos</button>
+            <button onclick="actualizarMen()">Actualizar</button>
+    </div>
 
     <div>
 

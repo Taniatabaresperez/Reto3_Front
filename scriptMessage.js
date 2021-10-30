@@ -1,7 +1,7 @@
 function datosMensaje() {
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Message/all",
+        url: "http://129.151.123.97:8080/api/Message/all",
         type: 'GET',
 
         success: function (response) {
@@ -18,7 +18,7 @@ function datoEspMen(idDato) {
 
     $.ajax({
         dataType: 'JSON',
-        url: "http://localhost:8080/api/Message/" + idDato,
+        url: "http://129.151.123.97:8080/api/Message/" + idDato,
         type: 'GET',
         success: function (response) {
             console.log(response);
@@ -26,12 +26,11 @@ function datoEspMen(idDato) {
             $("#idMessage").val(response.idMessage);
             $("#idMessage").attr("readonly", true);
             $("#messageText").val(response.messageText);
-
-            let dato = document.getElementById("doctor");
-            dato.selectedIndex = response.doctor.id;
-
-            let dato2 = document.getElementById("client");
-            dato2.selectedIndex = response.client.idClient;
+            $("#doctor").empty();
+            $("#doctor").append(`<option value = '${response.doctor.id}'> ${response.doctor.name}</option>`);
+            $("#client").empty();
+            $("#client").append(`<option value = '${response.client.idClient}'> ${response.client.name}</option>`);
+           
         },
 
         error: function (jqXHR, textStatus, errorThrown) {
@@ -44,7 +43,7 @@ async function traerDoctor() {
     try {
         var doctor = await $.ajax({
             dataType: 'JSON',
-            url: "http://localhost:8080/api/Doctor/all",
+            url: "http://129.151.123.97:8080/api/Doctor/all",
             type: 'GET',
 
         });
@@ -66,18 +65,16 @@ async function traerCliente() {
     try {
         var client = await $.ajax({
             dataType: 'JSON',
-            url: "http://localhost:8080/api/Client/all",
+            url: "http://129.151.123.97:8080/api/Client/all",
             type: 'GET',
 
         });
-        //console.log(client);
         for (let i = 0; i < client.length; i++) {
             let option = document.createElement("option");
             option.setAttribute("class", "select-item");
             option.value = client[i].idClient;
             option.text = client[i].name;
             $("#client").append(option);
-            //console.log();
         }
     } catch (error) {
         console.error("Ocurrió un problema al traer los datos")
@@ -94,7 +91,7 @@ function crearMen() {
 
     $.ajax({
         dataType: 'json',
-        url: "http://localhost:8080/api/Message/save",
+        url: "http://129.151.123.97:8080/api/Message/save",
         data: JSON.stringify(datos),
         contentType: "application/json; charset=utf-8",
         type: 'POST',
@@ -117,10 +114,11 @@ function crearMen() {
 
 function actualizarMen() {
     let datos = {
-        id: $("#idMessage").val(),
+        idMessage: Number.parseInt($("#idMessage").val()),
         messageText: $("#messageText").val(),
-        dato: $("#doctor").val(),
-        dato2: $("#client").val(),
+        client: {idClient:Number.parseInt($("#client").val())},
+        doctor: {id:Number.parseInt($("#doctor").val())},
+        
         
     }
     console.log(datos);
@@ -129,7 +127,7 @@ function actualizarMen() {
         dataType: 'json',
         data: JSON.stringify(datos),
         contentType: "application/json; charset=utf-8",
-        url: "http://localhost:8080/api/Message/update",
+        url: "http://129.151.123.97:8080/api/Message/update",
         type: 'PUT',
 
         statusCode: {
@@ -153,7 +151,7 @@ function borrarMen(idMen) {
     $.ajax({
         dataType: 'json',
         data: JSON.stringify(idMen),
-        url: "http://localhost:8080/api/Message/" + idMen,
+        url: "http://129.151.123.97:8080/api/Message/" + idMen,
         type: 'DELETE',
         contentType: 'application/json',
 
@@ -197,5 +195,4 @@ function mostrarTabla(misDatos) {
 $(document).ready(function () {
     traerDoctor();
     traerCliente();
-    datosMensaje();
 })

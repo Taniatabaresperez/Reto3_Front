@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title></title>
 
     <style>
-
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
     </style>
 
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
 
 </head>
+
 <body>
 
     <h1>Servicios médicos especializados</h1>
     <h3>Formulario Clientes</h3>
-    
-    <input type="text" id="email" placeholder="Email"><br>
-    <input type="text" id="password" placeholder="Contraseña"><br>
-    <input type="text" id="name" placeholder="Nombre"><br>
-    <input type="number" id="age" placeholder="Edad"><br>
-    <br>
-    <button onclick="crearC()">Agregar</button>
-    <button onclick="datosCliente()">Ver datos</button>
-    <button onclick="actualizarCliente()">Actualizar</button>
 
     <div>
-        
+        <type="number" id="idClient" placeholder="Id"></type>
+            <input type="text" id="email" placeholder="Email"><br>
+            <input type="text" id="password" placeholder="Contraseña"><br>
+            <input type="text" id="name" placeholder="Nombre"><br>
+            <input type="number" id="age" placeholder="Edad"><br>
+            <br>
+            <button onclick="crearC()">Agregar</button>
+            <button onclick="datosCliente()">Ver datos</button>
+            <button onclick="actualizarCliente()">Actualizar</button>
+    </div>
+
+    <div>
+
         <table>
             <thead>
                 <th>Email</th>
@@ -43,9 +48,9 @@
             <tbody id="datos2">
                 <br>
             </tbody>
-            
+
         </table>
-        
+
     </div>
 
     <ul>
@@ -57,4 +62,5 @@
     <script type="text/javascript" src="../scriptClient.js"></script>
 
 </body>
+
 </html>
