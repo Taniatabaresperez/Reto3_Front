@@ -186,7 +186,9 @@ function mostrarTabla(misDatos) {
         tabla += "<td>" + misDatos[i].devolutionDate.split("T")[0] + "</td>";
         tabla += "<td>" + misDatos[i].status + "</td>";
         tabla += "<td>" + misDatos[i].doctor.name + "</td>";
+        tabla += "<td>" + misDatos[i].client.idClient + "</td>";
         tabla += "<td>" + misDatos[i].client.name + "</td>";
+        tabla += "<td>" + misDatos[i].client.email + "</td>";
         tabla += '<td><button onclick="borrarReservacion(' + misDatos[i].idReservation + ')">Borrar</button></td>';
         tabla += '<td><button onclick="datoEspReservacion(' + misDatos[i].idReservation + ')">Cargar dato</button></td>';
         tabla += "</tr>";
