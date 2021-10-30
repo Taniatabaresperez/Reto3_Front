@@ -1,0 +1,26 @@
+URL:http://127.0.0.1:5500/index.html
+https://g2cfdebd176ca01-medicobd1.adb.sa-santiago-1.oraclecloudapps.com/ords/admin/client/client
+----------------------------------
+SELECT * FROM CLIENT
+----------------------------------
+SELECT * FROM CLIENT WHERE ID= :id
+-----------------------------------
+BEGIN
+    INSERT INTO CLIENT
+    (ID, NAME, EMAIL, AGE) 
+    VALUES (:id,:name,:email,:age);
+    :status_code :=201;
+END;
+-----------------------------------
+BEGIN
+    UPDATE CLIENT SET NAME = :name, EMAIL = :email, AGE = :age WHERE ID = :id;
+    :status_code :=201;
+END;
+-----------------------------------
+BEGIN
+    DELETE FROM CLIENT WHERE ID = :id;
+    :status_code:=204;
+END;
+
+
+
