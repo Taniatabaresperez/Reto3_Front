@@ -34,32 +34,36 @@ function datoEspEspecialidad(idDato) {
 }
 
 function crearE() {
-    let datos = {
-        name: $("#name").val(),
-        description: $("#description").val()
-    }
-
-    $.ajax({
-        dataType: 'JSON',
-        data: JSON.stringify(datos),
-        url: "http://129.151.123.97:8080/api/Specialty/save",
-        contentType: "application/JSON; charset=utf-8",
-        type: 'POST',
-
-        statusCode: {
-            201: function () {
-                alert("Los datos se guardaron correctamente");
-                $("#datos").empty();
-                $("#id").attr("readonly", false);
-                limpiarCampos();
-                datosEspecialidad();
-            }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se guardaron correctamente");
+    if ($("#name").val() == "" || $("#description").val() == "") {
+        alert("Todods los campos son obligatorios")
+    } else {
+        let datos = {
+            name: $("#name").val(),
+            description: $("#description").val()
         }
-    });
+
+        $.ajax({
+            dataType: 'JSON',
+            data: JSON.stringify(datos),
+            url: "http://129.151.123.97:8080/api/Specialty/save",
+            contentType: "application/JSON; charset=utf-8",
+            type: 'POST',
+
+            statusCode: {
+                201: function () {
+                    alert("Los datos se guardaron correctamente");
+                    $("#datos").empty();
+                    $("#id").attr("readonly", false);
+                    limpiarCampos();
+                    datosEspecialidad();
+                }
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se guardaron correctamente");
+            }
+        });
+    }
 }
 
 function actualizarEsp() {
@@ -133,8 +137,8 @@ function mostrarTabla(misDatos) {
         tabla += "<td>" + misDatos[i].description + "</td>";
         let seleccionar = "<select>";
         for (let j = 0; j < misDatos[i].doctors.length; j++) {
-            const element = misDatos[i].doctors[j]; 
-            seleccionar += `<option value="${element.id}"> ${element.name} </option>`;  
+            const element = misDatos[i].doctors[j];
+            seleccionar += `<option value="${element.id}"> ${element.name} </option>`;
         }
         //console.log(seleccionar)
         seleccionar += "</select>"

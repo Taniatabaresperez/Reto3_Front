@@ -36,40 +36,44 @@ function datoEspCliente(idDato) {
 }
 
 function crearC() {
-    let datos = {
-        email: $("#email").val(),
-        password: $("#password").val(),
-        name: $("#name").val(),
-        age: $("#age").val()
-    }
-
-    $.ajax({
-        dataType: 'JSON',
-        data: JSON.stringify(datos),
-        url: "http://129.151.123.97:8080/api/Client/save",
-        contentType: "application/JSON; charset=utf-8",
-        type: 'POST',
-
-        statusCode: {
-            201: function () {
-                alert("Los datos se guardaron correctamente");
-                $("#datos2").empty();
-                $("#idClient").attr("readonly", false);
-                limpiarCampos();
-                datosCliente();
-            }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se guardaron correctamente");
+    if ($("#email").val() == "" || $("#password").val() == "" || $("#name").val() == "" || $("#age").val() == "") {
+        alert("Todods los campos son obligatorios")
+    } else {
+        let datos = {
+            email: $("#email").val(),
+            password: $("#password").val(),
+            name: $("#name").val(),
+            age: $("#age").val()
         }
-    });
+
+        $.ajax({
+            dataType: 'JSON',
+            data: JSON.stringify(datos),
+            url: "http://129.151.123.97:8080/api/Client/save",
+            contentType: "application/JSON; charset=utf-8",
+            type: 'POST',
+
+            statusCode: {
+                201: function () {
+                    alert("Los datos se guardaron correctamente");
+                    $("#datos2").empty();
+                    $("#idClient").attr("readonly", false);
+                    limpiarCampos();
+                    datosCliente();
+                }
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se guardaron correctamente");
+            }
+        });
+    }
 }
 
 function actualizarCliente() {
     let datos = {
         idClient: Number.parseInt($("#idClient").val()),
-        email: $("#email").val(),
+        //email: $("#email").val(),
         password: $("#password").val(),
         name: $("#name").val(),
         age: Number.parseInt($("#age").val())
@@ -142,9 +146,9 @@ function mostrarTabla(misDatos) {
         tabla += "<td>" + misDatos[i].age + "</td>";
         let seleccionar = "<select>";
         for (let j = 0; j < misDatos[i].messages.length; j++) {
-            const element = misDatos[i].messages[j]; 
-            seleccionar += `<option value="${element.idMessage}"> ${element.messageText} </option>`;  
-            
+            const element = misDatos[i].messages[j];
+            seleccionar += `<option value="${element.idMessage}"> ${element.messageText} </option>`;
+
         }
         seleccionar += "</select>"
         tabla += `<td>${seleccionar}</td>`

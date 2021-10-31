@@ -60,45 +60,49 @@ async function traerSpecialty() {
 }
 
 function crearDoctor() {
-    let datos = {
-        name: $("#name").val(),
-        department: $("#department").val(),
-        year: Number.parseInt($("#year").val()),
-        description: $("#description").val(),
-        specialty:{id:Number.parseInt($("#specialty").val())},
-        
-    }
-    $.ajax({
-        dataType: 'JSON',
-        url: "http://129.151.123.97:8080/api/Doctor/save",
-        data: JSON.stringify(datos),
-        contentType: "application/json; charset=utf-8",
-        type: 'POST',
+    if ($("#name").val() == "" || $("#department").val() == "" || $("#year").val() == "" || $("#description").val() == "" || $("#specialty").val() == "") {
+        alert("Todods los campos son obligatorios")
+    } else {
+        let datos = {
+            name: $("#name").val(),
+            department: $("#department").val(),
+            year: Number.parseInt($("#year").val()),
+            description: $("#description").val(),
+            specialty: { id: Number.parseInt($("#specialty").val()) },
 
-        statusCode: {
-            201: function () {
-                alert("Los datos se guardaron correctamente");
-                $("#datos1").empty();
-                $("#id").attr("readonly", false);
-                limpiarCampos();
-                datosDoctor();
-            }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se guardaron correctamente");
         }
-    });
+        $.ajax({
+            dataType: 'JSON',
+            url: "http://129.151.123.97:8080/api/Doctor/save",
+            data: JSON.stringify(datos),
+            contentType: "application/json; charset=utf-8",
+            type: 'POST',
+
+            statusCode: {
+                201: function () {
+                    alert("Los datos se guardaron correctamente");
+                    $("#datos1").empty();
+                    $("#id").attr("readonly", false);
+                    limpiarCampos();
+                    datosDoctor();
+                }
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se guardaron correctamente");
+            }
+        });
+    }
 }
 
 function actualizarDoctores() {
     let datos = {
         id: $("#id").val(),
         name: $("#name").val(),
-        department: $("#department").val(),
-        year:  Number.parseInt($("#year").val()),
+        //department: $("#department").val(),
+        year: Number.parseInt($("#year").val()),
         description: $("#description").val(),
-        specialty: {id:Number.parseInt($("#specialty").val())}
+        specialty: { id: Number.parseInt($("#specialty").val()) }
     }
 
     let dataToSend = JSON.stringify(datos)
@@ -175,7 +179,7 @@ function mostrarTabla(misDatos) {
         }
         seleccionar += "</select>"
         tabla += `<td>${seleccionar}</td>`
-        
+
         let selecciona = "<select>";
         for (let j = 0; j < misDatos[i].reservations.length; j++) {
             const element = misDatos[i].reservations[j];

@@ -43,70 +43,74 @@ function datoEspReservacion(idDato) {
 }
 
 async function traerDoctor() {
-    
+
     var doctor = await $.ajax({
         dataType: 'JSON',
         url: "http://129.151.123.97:8080/api/Doctor/all",
         type: 'GET',
-        
-    });  
+
+    });
     for (let i = 0; i < doctor.length; i++) {
         let option = document.createElement("option");
         option.setAttribute("class", "select-item");
         option.value = doctor[i].id;
         option.text = doctor[i].name;
         $("#doctor").append(option);
-    }   
+    }
 }
 
 async function traerCliente() {
-    
+
     var client = await $.ajax({
         dataType: 'JSON',
         url: "http://129.151.123.97:8080/api/Client/all",
         type: 'GET',
-        
-    }); 
+
+    });
     for (let i = 0; i < client.length; i++) {
         let option = document.createElement("option");
         option.setAttribute("class", "select-item");
         option.value = client[i].idClient;
         option.text = client[i].name;
         $("#client").append(option);
-    }   
+    }
 }
 
 function crearR() {
-    let datos = {
-        startDate: $("#startDate").val(),
-        devolutionDate: $("#devolutionDate").val(),
-        status: $("#status").val(),
-        doctor: {id:Number.parseInt($("#doctor").val())},
-        client:{idClient:Number.parseInt($("#client").val())},
+    if ($("#startDate").val() == "" || $("#devolutionDate").val() == "" || $("#status").val() == "" || $("#doctor").val() == "" || $("#client").val() == "") {
+        alert("Todods los campos son obligatorios")
+    } else {
+        let datos = {
+            startDate: $("#startDate").val(),
+            devolutionDate: $("#devolutionDate").val(),
+            status: $("#status").val(),
+            doctor: { id: Number.parseInt($("#doctor").val()) },
+            client: { idClient: Number.parseInt($("#client").val()) },
+        }
+        console.log(datos)
+
+        $.ajax({
+            dataType: 'JSON',
+            data: JSON.stringify(datos),
+            url: "http://129.151.123.97:8080/api/Reservation/save",
+            contentType: "application/json; charset=utf-8",
+            type: 'POST',
+
+            statusCode: {
+                201: function () {
+                    alert("Los datos se guardaron correctamente");
+                    $("#datos4").empty();
+                    $("#idReservation").attr("readonly", false);
+                    limpiarCampos();
+                    datosReservacion();
+                }
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se guardaron correctamente");
+            },
+        });
     }
-    console.log(datos)
-
-    $.ajax({
-        dataType: 'JSON',
-        data: JSON.stringify(datos),
-        url: "http://129.151.123.97:8080/api/Reservation/save",
-        contentType: "application/json; charset=utf-8",
-        type: 'POST',
-
-        statusCode: {
-            201: function () {
-                alert("Los datos se guardaron correctamente");
-                $("#datos4").empty();
-                $("#idReservation").attr("readonly", false);
-                limpiarCampos();
-                datosReservacion();
-            }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se guardaron correctamente");
-        },
-    });
 }
 
 function actualizarRes() {
@@ -181,8 +185,8 @@ function mostrarTabla(misDatos) {
     let tabla = "<table>";
     for (i = 0; i < misDatos.length; i++) {
         tabla += "<tr>";
-        tabla += "<td>" + misDatos[i].idReservation+ "</td>";
-        tabla += "<td>" + misDatos[i].startDate.split("T")[0]+ "</td>";
+        tabla += "<td>" + misDatos[i].idReservation + "</td>";
+        tabla += "<td>" + misDatos[i].startDate.split("T")[0] + "</td>";
         tabla += "<td>" + misDatos[i].devolutionDate.split("T")[0] + "</td>";
         tabla += "<td>" + misDatos[i].status + "</td>";
         tabla += "<td>" + misDatos[i].doctor.name + "</td>";
@@ -195,10 +199,10 @@ function mostrarTabla(misDatos) {
     }
     tabla += "</table>";
     $("#datos4").html(tabla);
-    
+
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
     traerDoctor();
     traerCliente();
 })

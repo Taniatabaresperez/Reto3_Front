@@ -30,7 +30,7 @@ function datoEspMen(idDato) {
             $("#doctor").append(`<option value = '${response.doctor.id}'> ${response.doctor.name}</option>`);
             $("#client").empty();
             $("#client").append(`<option value = '${response.client.idClient}'> ${response.client.name}</option>`);
-           
+
         },
 
         error: function (jqXHR, textStatus, errorThrown) {
@@ -82,44 +82,48 @@ async function traerCliente() {
 }
 
 function crearMen() {
-    let datos = {
-        messageText: $("#messageText").val(),
-        doctor: {id:Number.parseInt($("#doctor").val())},
-        client:{idClient:Number.parseInt($("#client").val())},
-    }
-    console.log(datos)
-
-    $.ajax({
-        dataType: 'json',
-        url: "http://129.151.123.97:8080/api/Message/save",
-        data: JSON.stringify(datos),
-        contentType: "application/json; charset=utf-8",
-        type: 'POST',
-
-        statusCode: {
-            201: function () {
-                alert("Los datos se guardaron correctamente");
-                $("#datos3").empty();
-                $("#idMessage").attr("readonly", false);
-                limpiarCampos();
-                datosMensaje();
-            }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se guardaron correctamente");
+    if ($("#messageText").val() == "" || $("#doctor").val() == "" || $("#client").val() == "") {
+        alert("Todods los campos son obligatorios")
+    } else {
+        let datos = {
+            messageText: $("#messageText").val(),
+            doctor: { id: Number.parseInt($("#doctor").val()) },
+            client: { idClient: Number.parseInt($("#client").val()) },
         }
-    });
+        console.log(datos)
+
+        $.ajax({
+            dataType: 'json',
+            url: "http://129.151.123.97:8080/api/Message/save",
+            data: JSON.stringify(datos),
+            contentType: "application/json; charset=utf-8",
+            type: 'POST',
+
+            statusCode: {
+                201: function () {
+                    alert("Los datos se guardaron correctamente");
+                    $("#datos3").empty();
+                    $("#idMessage").attr("readonly", false);
+                    limpiarCampos();
+                    datosMensaje();
+                }
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se guardaron correctamente");
+            }
+        });
+    }
 }
 
 function actualizarMen() {
     let datos = {
         idMessage: Number.parseInt($("#idMessage").val()),
         messageText: $("#messageText").val(),
-        client: {idClient:Number.parseInt($("#client").val())},
-        doctor: {id:Number.parseInt($("#doctor").val())},
+        client: { idClient: Number.parseInt($("#client").val()) },
         
-        
+
+
     }
     console.log(datos);
 
