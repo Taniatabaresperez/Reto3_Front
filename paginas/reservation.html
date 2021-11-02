@@ -27,11 +27,18 @@
             <input type="date" id="startDate" placeholder="Fecha de inicio"><br>
             <input type="date" id="devolutionDate" placeholder="Fecha de devolucion"><br>
             <select id="doctor" class="select-container">
-                <option>Seleccione un Doctor...</option>
+                <option value="0">Seleccione un Doctor...</option>
             </select><br>
             <select id="client" class="select-container">
-                <option>Seleccione un Cliente...</option>
+                <option value="0">Seleccione un Cliente...</option>
             </select><br>
+            <select id="status" class="select-container">
+                <option value="0">Estado de la reserva...</option>
+                <option>Programado</option>
+                <option>Cancelado</option>
+                <option>Realizado</option>
+            </select><br>
+            
             <br>
             <button onclick="crearR()">Agregar</button>
             <button onclick="datosReservacion()">Ver datos</button>
@@ -44,11 +51,11 @@
                 <th>Id</th>
                 <th>Fecha de inicio</th>
                 <th>Fecha de devolución</th>
-                <th>Estado</th>
                 <th>Doctor</th>
                 <th>Id Cliente</th>
                 <th>Nombre</th>
                 <th>Email</th>
+                <th>Estado de la reserva</th>
                 <th colspan="3">Acciones</th>
             </thead>
             <tbody id="datos4">

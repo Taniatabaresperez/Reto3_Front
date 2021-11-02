@@ -26,10 +26,11 @@ function datoEspDoc(idDato) {
             $("#id").attr("readonly", true);
             $("#name").val(response.name);
             $("#department").val(response.department);
+            $("#department").attr("disabled", true);
             $("#year").val(response.year);
             $("#description").val(response.description);
-            $("#specialty").empty();
-            $("#specialty").append(`<option value = '${response.specialty.id}'> ${response.specialty.name}</option>`);
+            $("#specialty").val(response.specialty.id);
+            return response;
         },
 
         error: function (jqXHR, textStatus, errorThrown) {
@@ -60,17 +61,24 @@ async function traerSpecialty() {
 }
 
 function crearDoctor() {
-    if ($("#name").val() == "" || $("#department").val() == "" || $("#year").val() == "" || $("#description").val() == "" || $("#specialty").val() == "") {
-        alert("Todods los campos son obligatorios")
-    } else {
-        let datos = {
-            name: $("#name").val(),
-            department: $("#department").val(),
-            year: Number.parseInt($("#year").val()),
-            description: $("#description").val(),
-            specialty: { id: Number.parseInt($("#specialty").val()) },
+    let datos = {
+        name: $("#name").val(),
+        department: $("#department").val(),
+        year: Number.parseInt($("#year").val()),
+        description: $("#description").val(),
+        specialty: { id: Number.parseInt($("#specialty").val()) },
+    }
 
-        }
+    if ($("#name").val() == "" || $("#department").val() == "" || $("#year").val() == "" || $("#description").val() == "" || $("#specialty").val() == "0") {
+        alert("Todos los campos son obligatorios");
+    } else if ($("#year").val().length !== 4) {
+        alert("El año debe ser un número de 4 dígitos");
+    } else if ($("#name").val().length > 45) {
+        alert("El nombre debe ser un texto de máximo 45 caracteres");
+    } else if ($("#description").val().length > 250) {
+        alert("La descripción debe ser un texto de máximo 250 caracteres");
+    } else {
+        
         $.ajax({
             dataType: 'JSON',
             url: "http://129.151.123.97:8080/api/Doctor/save",
@@ -104,34 +112,57 @@ function actualizarDoctores() {
         description: $("#description").val(),
         specialty: { id: Number.parseInt($("#specialty").val()) }
     }
+    if ($("#year").val().length !== 4) {
+        alert("El año debe ser un número de 4 dígitos");}
+    else if ($("#name").val().length > 45) {
+        alert("El nombre debe ser un texto de máximo 45 caracteres");
+    } else if ($("#description").val().length > 250) {
+        alert("La descripción debe ser un texto de máximo 250 caracteres");
+    } else {
 
-    let dataToSend = JSON.stringify(datos)
-    $.ajax({
-        dataType: 'JSON',
-        data: dataToSend,
-        contentType: "application/json",
-        url: "http://129.151.123.97:8080/api/Doctor/update",
-        type: 'PUT',
+        let dataToSend = JSON.stringify(datos)
+        $.ajax({
+            dataType: 'JSON',
+            data: dataToSend,
+            contentType: "application/json",
+            url: "http://129.151.123.97:8080/api/Doctor/update",
+            type: 'PUT',
 
-        statusCode: {
-            201: function () {
-                alert("Los datos se modificaron correctamente");
-                $("#datos1").empty();
-                $("#id").attr("readonly", false);
-                limpiarCampos();
-                datosDoctor();
+            statusCode: {
+                201: function () {
+                    alert("Los datos se modificaron correctamente");
+                    $("#datos1").empty();
+                    $("#id").attr("readonly", false);
+                    $("#department").attr("disabled", false);
+                    limpiarCampos();
+                    datosDoctor();
+                }
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se modificaron correctamente");
             }
-        },
 
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se modificaron correctamente");
-        }
+        });
+    }
+}
 
+async function validarRelacion(idDoctor) {
+    const doctor = await $.ajax({
+        url: "http://129.151.123.97:8080/api/Doctor/" + idDoctor,
+        type: "GET",
+        dataType: "JSON"
     });
+    if (doctor.messages.length === 0 && doctor.reservations.length === 0) {
+        borrarDoc(idDoctor);
+    } else {
+        alert("No se puede borrar un doctor que tenga un mensaje o una reservación")
+    }
 }
 
 function borrarDoc(idDoctor) {
     let dataToSend = JSON.stringify(idDoctor);
+
     $.ajax({
         dataType: 'JSON',
         data: dataToSend,
@@ -188,7 +219,7 @@ function mostrarTabla(misDatos) {
         selecciona += "</select>"
         tabla += `<td>${selecciona}</td>`
 
-        tabla += '<td><button onclick="borrarDoc(' + misDatos[i].id + ')">Borrar</button></td>';
+        tabla += '<td><button onclick="validarRelacion(' + misDatos[i].id + ')">Borrar</button></td>';
         tabla += '<td><button onclick="datoEspDoc(' + misDatos[i].id + ')">Cargar dato</button></td>';
         tabla += "</tr>";
     }

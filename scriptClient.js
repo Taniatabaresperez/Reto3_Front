@@ -24,6 +24,7 @@ function datoEspCliente(idDato) {
             $("#idClient").val(response.idClient);
             $("#idClient").attr("readonly", true);
             $("#email").val(response.email);
+            $("#email").attr("disabled", true);
             $("#password").val(response.password);
             $("#name").val(response.name);
             $("#age").val(response.age);
@@ -36,16 +37,20 @@ function datoEspCliente(idDato) {
 }
 
 function crearC() {
-    if ($("#email").val() == "" || $("#password").val() == "" || $("#name").val() == "" || $("#age").val() == "") {
-        alert("Todods los campos son obligatorios")
-    } else {
-        let datos = {
-            email: $("#email").val(),
-            password: $("#password").val(),
-            name: $("#name").val(),
-            age: $("#age").val()
-        }
 
+    let datos = {
+        email: $("#email").val(),
+        password: $("#password").val(),
+        name: $("#name").val(),
+        age: $("#age").val()
+    }
+    if ($("#email").val() == "" || $("#password").val() == "" || $("#name").val() == "" || $("#age").val() == "") {
+        alert("Todos los campos son obligatorios")
+    } else if ($("#password").val().length > 45) {
+        alert("La contraseña debe ser un texto de máximo 45 caracteres");
+    } else if ($("#name").val().length > 250) {
+        alert("El nombre debe ser un texto de máximo 250 caracteres");
+    } else {
         $.ajax({
             dataType: 'JSON',
             data: JSON.stringify(datos),
@@ -78,33 +83,50 @@ function actualizarCliente() {
         name: $("#name").val(),
         age: Number.parseInt($("#age").val())
     }
+    if ($("#password").val().length > 45) {
+        alert("La contraseña debe ser un texto de máximo 45 caracteres");
+    } else if ($("#name").val().length > 250) {
+        alert("El nombre debe ser un texto de máximo 250 caracteres");
+    } else {
+        $.ajax({
+            dataType: 'JSON',
+            url: "http://129.151.123.97:8080/api/Client/update",
+            data: JSON.stringify(datos),
+            contentType: "application/json",
+            type: 'PUT',
 
-    $.ajax({
-        dataType: 'JSON',
-        url: "http://129.151.123.97:8080/api/Client/update",
-        data: JSON.stringify(datos),
-        contentType: "application/json",
-        type: 'PUT',
+            statusCode: {
+                201: function () {
+                    alert("Los datos se modificaron correctamente");
+                    $("#datos2").empty();
+                    $("#idClient").attr("readonly", false);
+                    $("#email").attr("disabled", false);
+                    limpiarCampos();
+                    datosCliente();
+                }
+            },
 
-        statusCode: {
-            201: function () {
-                alert("Los datos se modificaron correctamente");
-                $("#datos2").empty();
-                $("#idClient").attr("readonly", false);
-                limpiarCampos();
-                datosCliente();
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se modificaron correctamente");
             }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se modificaron correctamente");
-        }
+        });
+    }
+}
+async function validarRelacion(idCliente) {
+    const client = await $.ajax({
+        url: "http://129.151.123.97:8080/api/Client/" + idCliente,
+        type: "GET",
+        dataType: "JSON"
     });
+    if (client.messages.length === 0 && client.reservations.length === 0) {
+        borrarCliente(idCliente);
+    } else {
+        alert("No se puede borrar un cliente que tenga un mensaje o una reservación")
+    }
 }
 
 function borrarCliente(idCliente) {
     let dataToSend = JSON.stringify(idCliente);
-    console.log(dataToSend)
     $.ajax({
         dataType: 'JSON',
         data: dataToSend,
@@ -162,7 +184,7 @@ function mostrarTabla(misDatos) {
         tabla += `<td>${selecciona}</td>`
 
         tabla += "<td> </td>"
-        tabla += '<td><button onclick="borrarCliente(' + misDatos[i].idClient + ')">Borrar</button></td>';
+        tabla += '<td><button onclick="validarRelacion(' + misDatos[i].idClient + ')">Borrar</button></td>';
         tabla += '<td><button onclick="datoEspCliente(' + misDatos[i].idClient + ')">Cargar dato</button></td>';
         tabla += "</tr>";
     }

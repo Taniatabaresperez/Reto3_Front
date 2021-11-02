@@ -22,17 +22,16 @@ function datoEspReservacion(idDato) {
         url: "http://129.151.123.97:8080/api/Reservation/" + idDato,
         type: 'GET',
         success: function (response) {
-            console.log(response);
 
             $("#idReservation").val(response.idReservation);
             $("#idReservation").attr("readonly", true);
             $("#startDate").val(response.startDate.split("T")[0]);
             $("#devolutionDate").val(response.devolutionDate.split("T")[0]);
-            $("#status").val(response.status);
             $("#doctor").empty();
             $("#doctor").append(`<option value = '${response.doctor.id}'> ${response.doctor.name}</option>`);
             $("#client").empty();
             $("#client").append(`<option value = '${response.client.idClient}'> ${response.client.name}</option>`);
+            $("#status").val(response.status);
 
         },
 
@@ -44,7 +43,7 @@ function datoEspReservacion(idDato) {
 
 async function traerDoctor() {
 
-    var doctor = await $.ajax({
+    let doctor = await $.ajax({
         dataType: 'JSON',
         url: "http://129.151.123.97:8080/api/Doctor/all",
         type: 'GET',
@@ -61,7 +60,7 @@ async function traerDoctor() {
 
 async function traerCliente() {
 
-    var client = await $.ajax({
+    let client = await $.ajax({
         dataType: 'JSON',
         url: "http://129.151.123.97:8080/api/Client/all",
         type: 'GET',
@@ -77,18 +76,20 @@ async function traerCliente() {
 }
 
 function crearR() {
-    if ($("#startDate").val() == "" || $("#devolutionDate").val() == "" || $("#status").val() == "" || $("#doctor").val() == "" || $("#client").val() == "") {
-        alert("Todods los campos son obligatorios")
+    let datos = {
+        startDate: $("#startDate").val(),
+        devolutionDate: $("#devolutionDate").val(),
+        doctor: { id: Number.parseInt($("#doctor").val()) },
+        client: { idClient: Number.parseInt($("#client").val()) },
+        status: $("#status").val(),
+    }
+    if ($("#startDate").val() == "" || $("#devolutionDate").val() == "" || $("#doctor").val() == "0" || $("#client").val() == "0" || $("#status").val() == "0") {
+        alert("Todods los campos son obligatorios");
+    } 
+    else if (!validarFechas()) {
+        alert("La fecha final debe ser mayor a la fecha inicial");
+        
     } else {
-        let datos = {
-            startDate: $("#startDate").val(),
-            devolutionDate: $("#devolutionDate").val(),
-            status: $("#status").val(),
-            doctor: { id: Number.parseInt($("#doctor").val()) },
-            client: { idClient: Number.parseInt($("#client").val()) },
-        }
-        console.log(datos)
-
         $.ajax({
             dataType: 'JSON',
             data: JSON.stringify(datos),
@@ -113,35 +114,40 @@ function crearR() {
     }
 }
 
+
 function actualizarRes() {
-    let datos = {
-        idReservation: $("#idReservation").val(),
-        startDate: $("#startDate").val(),
-        devolutionDate: $("#devolutionDate").val(),
-        status: $("#status").val()
-    }
-
-    $.ajax({
-        dataType: 'JSON',
-        data: JSON.stringify(datos),
-        contentType: "application/json; charset=utf-8",
-        url: "http://129.151.123.97:8080/api/Reservation/update",
-        type: 'PUT',
-
-        statusCode: {
-            201: function () {
-                alert("Los datos se modificaron correctamente");
-                $("#datos4").empty();
-                $("#idReservation").attr("readonly", false);
-                limpiarCampos();
-                datosReservacion();
-            }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se modificaron correctamente");
+    if (validarFechas()) {
+        alert("La fecha final debe ser mayor a la fecha inicial");
+    } else {
+        let datos = {
+            idReservation: $("#idReservation").val(),
+            startDate: $("#startDate").val(),
+            devolutionDate: $("#devolutionDate").val(),
+            status: $("#status").val(),
         }
-    });
+
+        $.ajax({
+            dataType: 'JSON',
+            data: JSON.stringify(datos),
+            contentType: "application/json; charset=utf-8",
+            url: "http://129.151.123.97:8080/api/Reservation/update",
+            type: 'PUT',
+
+            statusCode: {
+                201: function () {
+                    alert("Los datos se modificaron correctamente");
+                    $("#datos4").empty();
+                    $("#idReservation").attr("readonly", false);
+                    limpiarCampos();
+                    datosReservacion();
+                }
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se modificaron correctamente");
+            }
+        });
+    }
 }
 
 function borrarReservacion(idRes) {
@@ -175,24 +181,33 @@ function limpiarCampos() {
     $("#idReservation").val("");
     $("#startDate").val("");
     $("#devolutionDate").val("");
-    $("#status").val("");
     $("#doctor").val("");
     $("#client").val("");
+    $("#status").val("");
+}
+
+function validarFechas() {
+    let fechainicial = $("#startDate").val();
+    let fechafinal = $("#devolutionDate").val();
+    if (Date.parse(fechafinal) < Date.parse(fechainicial)) {
+
+        return false;
+    }
+    return true;
 }
 
 function mostrarTabla(misDatos) {
-    //console.log(misDatos)
     let tabla = "<table>";
     for (i = 0; i < misDatos.length; i++) {
         tabla += "<tr>";
         tabla += "<td>" + misDatos[i].idReservation + "</td>";
         tabla += "<td>" + misDatos[i].startDate.split("T")[0] + "</td>";
         tabla += "<td>" + misDatos[i].devolutionDate.split("T")[0] + "</td>";
-        tabla += "<td>" + misDatos[i].status + "</td>";
         tabla += "<td>" + misDatos[i].doctor.name + "</td>";
         tabla += "<td>" + misDatos[i].client.idClient + "</td>";
         tabla += "<td>" + misDatos[i].client.name + "</td>";
         tabla += "<td>" + misDatos[i].client.email + "</td>";
+        tabla += "<td>" + misDatos[i].status + "</td>";
         tabla += '<td><button onclick="borrarReservacion(' + misDatos[i].idReservation + ')">Borrar</button></td>';
         tabla += '<td><button onclick="datoEspReservacion(' + misDatos[i].idReservation + ')">Cargar dato</button></td>';
         tabla += "</tr>";

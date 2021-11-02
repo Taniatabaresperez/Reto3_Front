@@ -35,7 +35,11 @@ function datoEspEspecialidad(idDato) {
 
 function crearE() {
     if ($("#name").val() == "" || $("#description").val() == "") {
-        alert("Todods los campos son obligatorios")
+        alert("Todos los campos son obligatorios")
+    } else if ($("#name").val().length > 45) {
+        alert("El nombre debe ser un texto de máximo 45 caracteres");
+    } else if ($("#description").val().length > 250) {
+        alert("La descripción debe ser un texto de máximo 250 caracteres");
     } else {
         let datos = {
             name: $("#name").val(),
@@ -72,35 +76,38 @@ function actualizarEsp() {
         name: $("#name").val(),
         description: $("#description").val(),
     }
-    console.log(datos)
+    if ($("#name").val().length > 45) {
+        alert("El nombre debe ser un texto de máximo 45 caracteres");
+    } else if ($("#description").val().length > 250) {
+        alert("La descripción debe ser un texto de máximo 250 caracteres");
+    } else {
+        let dataToSend = JSON.stringify(datos);
+        $.ajax({
+            dataType: 'JSON',
+            data: dataToSend,
+            contentType: "application/JSON",
+            url: "http://129.151.123.97:8080/api/Specialty/update",
+            type: 'PUT',
 
-    let dataToSend = JSON.stringify(datos);
-    $.ajax({
-        dataType: 'JSON',
-        data: dataToSend,
-        contentType: "application/JSON",
-        url: "http://129.151.123.97:8080/api/Specialty/update",
-        type: 'PUT',
+            statusCode: {
+                201: function () {
+                    alert("Los datos se modificaron correctamente");
+                    $("#datos").empty();
+                    $("#id").attr("readonly", false);
+                    limpiarCampos();
+                    datosEspecialidad();
+                }
+            },
 
-        statusCode: {
-            201: function () {
-                alert("Los datos se modificaron correctamente");
-                $("#datos").empty();
-                $("#id").attr("readonly", false);
-                limpiarCampos();
-                datosEspecialidad();
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se modificaron correctamente");
             }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se modificaron correctamente");
-        }
-    });
+        });
+    }
 }
 
 function borrarEsp(idEspecialidad) {
     let dataToSend = JSON.stringify(idEspecialidad);
-    console.log(dataToSend)
     $.ajax({
         dataType: 'JSON',
         data: dataToSend,

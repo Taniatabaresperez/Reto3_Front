@@ -21,16 +21,14 @@ function datoEspMen(idDato) {
         url: "http://129.151.123.97:8080/api/Message/" + idDato,
         type: 'GET',
         success: function (response) {
-            console.log(response);
 
             $("#idMessage").val(response.idMessage);
             $("#idMessage").attr("readonly", true);
             $("#messageText").val(response.messageText);
             $("#doctor").empty();
             $("#doctor").append(`<option value = '${response.doctor.id}'> ${response.doctor.name}</option>`);
-            $("#client").empty();
-            $("#client").append(`<option value = '${response.client.idClient}'> ${response.client.name}</option>`);
-
+            $("#client").val(response.client.idClient);
+            return response;
         },
 
         error: function (jqXHR, textStatus, errorThrown) {
@@ -82,15 +80,17 @@ async function traerCliente() {
 }
 
 function crearMen() {
-    if ($("#messageText").val() == "" || $("#doctor").val() == "" || $("#client").val() == "") {
+
+    let datos = {
+        messageText: $("#messageText").val(),
+        doctor: { id: Number.parseInt($("#doctor").val()) },
+        client: { idClient: Number.parseInt($("#client").val()) },
+    }
+    if ($("#messageText").val() == "" || $("#doctor").val() == "0" || $("#client").val() == "0") {
         alert("Todods los campos son obligatorios")
+    } else if ($("#messageText").val().length > 250) {
+        alert("El mensaje debe ser un texto de máximo 250 caracteres");
     } else {
-        let datos = {
-            messageText: $("#messageText").val(),
-            doctor: { id: Number.parseInt($("#doctor").val()) },
-            client: { idClient: Number.parseInt($("#client").val()) },
-        }
-        console.log(datos)
 
         $.ajax({
             dataType: 'json',
@@ -121,33 +121,32 @@ function actualizarMen() {
         idMessage: Number.parseInt($("#idMessage").val()),
         messageText: $("#messageText").val(),
         client: { idClient: Number.parseInt($("#client").val()) },
-        
-
-
     }
-    console.log(datos);
+    if ($("#messageText").val().length > 250) {
+        alert("El mensaje debe ser un texto de máximo 250 caracteres");
+    } else {
+        $.ajax({
+            dataType: 'JSON',
+            data: JSON.stringify(datos),
+            contentType: "application/json",
+            url: "http://129.151.123.97:8080/api/Message/update",
+            type: 'PUT',
 
-    $.ajax({
-        dataType: 'json',
-        data: JSON.stringify(datos),
-        contentType: "application/json; charset=utf-8",
-        url: "http://129.151.123.97:8080/api/Message/update",
-        type: 'PUT',
+            statusCode: {
+                201: function () {
+                    alert("Los datos se modificaron correctamente");
+                    $("#datos3").empty();
+                    $("#idMessage").attr("readonly", false);
+                    limpiarCampos();
+                    datosMensaje();
+                }
+            },
 
-        statusCode: {
-            201: function () {
-                alert("Los datos se modificaron correctamente");
-                $("#datos3").empty();
-                $("#idMessage").attr("readonly", false);
-                limpiarCampos();
-                datosMensaje();
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Los datos no se modificaron correctamente");
             }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert("Los datos no se modificaron correctamente");
-        }
-    });
+        });
+    }
 }
 
 function borrarMen(idMen) {
