@@ -87,7 +87,7 @@ function crearR() {
         alert("Todods los campos son obligatorios");
     } 
     else if (!validarFechas()) {
-        alert("La fecha final debe ser mayor a la fecha inicial");
+        alert("La fecha de devolucion debe ser mayor a la fecha de inicio");
         
     } else {
         $.ajax({
@@ -116,7 +116,7 @@ function crearR() {
 
 
 function actualizarRes() {
-    if (validarFechas()) {
+    if (!validarFechas()) {
         alert("La fecha final debe ser mayor a la fecha inicial");
     } else {
         let datos = {
@@ -197,10 +197,11 @@ function validarFechas() {
 }
 
 function mostrarTabla(misDatos) {
-    let tabla = "<table>";
+    let tabla = "<table class='ui center aligned celled table'>" + 
+    "<thead><tr><th>Fecha de inicio</th><th>Fecha de devolucion</th><th>Doctor</th><th>Id Cliente</th><th>Cliente</th><th>Email Cliente</th><th>Estado</th><th colspan='3'></th></tr></thead>";
+    console.log(misDatos)
     for (i = 0; i < misDatos.length; i++) {
         tabla += "<tr>";
-        tabla += "<td>" + misDatos[i].idReservation + "</td>";
         tabla += "<td>" + misDatos[i].startDate.split("T")[0] + "</td>";
         tabla += "<td>" + misDatos[i].devolutionDate.split("T")[0] + "</td>";
         tabla += "<td>" + misDatos[i].doctor.name + "</td>";
@@ -208,8 +209,8 @@ function mostrarTabla(misDatos) {
         tabla += "<td>" + misDatos[i].client.name + "</td>";
         tabla += "<td>" + misDatos[i].client.email + "</td>";
         tabla += "<td>" + misDatos[i].status + "</td>";
-        tabla += '<td><button onclick="borrarReservacion(' + misDatos[i].idReservation + ')">Borrar</button></td>';
-        tabla += '<td><button onclick="datoEspReservacion(' + misDatos[i].idReservation + ')">Cargar dato</button></td>';
+        tabla += "<td> <button class='ui yellow button' onclick='borrarReservacion(" + misDatos[i].idReservation + ")'>Borrar</button>";
+        tabla += "<td> <button class='ui red button' onclick='datoEspReservacion(" + misDatos[i].idReservation + ")'>Cargar dato</button>";
         tabla += "</tr>";
     }
     tabla += "</table>";

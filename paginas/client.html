@@ -2,65 +2,96 @@
 <html>
 
 <head>
-    <title></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="../scriptClient.js"></script>
+    <title>Client</title>
+    <link rel="stylesheet" href="../Nueva carpeta/Semantic-UI-CSS-master/semantic.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style type="text/css">
+        .full {
+            min-height: 80%;
+            background-image: url('../img/clientes.jpg');
+            background-size: cover;
+        }
 
-    <style>
-        table,
-        th,
-        td {
-            border: 1px solid black;
-            border-collapse: collapse;
+        .pheader.h1.ui.header {
+            margin-top: 20cm;
+            margin-bottom: 0em;
+            font-size: 4em;
+            font-weight: normal;
         }
     </style>
-
-    <meta http-equiv="Access-Control-Allow-Origin" content="*">
-
 </head>
 
 <body>
-
-    <h1>Servicios médicos especializados</h1>
-    <h3>Formulario Clientes</h3>
-
-    <div>
-        <type="number" id="idClient" placeholder="Id"></type>
-            <input type="text" id="email" placeholder="Email"><br>
-            <input type="text" id="password" placeholder="Contraseña"><br>
-            <input type="text" id="name" placeholder="Nombre"><br>
-            <input type="number" id="age" placeholder="Edad"><br>
-            <br>
-            <button onclick="crearC()">Agregar</button>
-            <button onclick="datosCliente()">Ver datos</button>
-            <button onclick="actualizarCliente()">Actualizar</button>
+    <div class="ui black inverted fixed menu">
+        <a class="item" href="../index.html">
+            <i class="home icon"></i>
+            Inicio
+        </a>
+        <a class="item" href="specialty.html">
+            Especialidad
+        </a>
+        <a class="item" href="doctor.html">
+            Doctor
+        </a>
+        <a class="item" href="client.html">
+            Clientes
+        </a>
+        <a class="item" href="message.html">
+            Mensajes
+        </a>
+        <a class="item" href="reservation.html">
+            Reservaciones
+        </a>
     </div>
+    <div class="full">
+       
+    </div>
+    <div class="ui divider"></div>
+    <div class="container__form">
+        <div class="row">
+            <div class="column">
+                <h2>Registro de Clientes</h2>
+                <div class="ui form">
+                    <div>
+                        <type="number" id="idClient" placeholder="Id"></type>
+                    </div>
+                    <div class="ui field">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" placeholder="Email">
+                    </div>
+                    <div class="ui field">
+                        <label for="password">Contraseña</label>
+                        <input type="text" id="password" placeholder="Contraseña">
+                    </div>
+                    <div class="ui field">
+                        <label for="name">Nombre</label>
+                        <input type="text" id="name" placeholder="Nombre">
+                    </div>
+                    <div class="ui field">
+                        <label for="age">Edad</label>
+                        <input type="number" id="age" placeholder="Edad">
+                    </div>
+                    <button onclick="crearC()" class="ui purple button" > Agregar Cliente</button>
+                    <button onclick="datosCliente()" class="ui blue button" >Ver Clientes </button>
+                    <button onclick="actualizarCliente()" class="ui orange button" >Actualizar Cliente </button>
+                </div>
+            </div>
+            <div class="column">
+                <h2>Lista de Clientes</h2>
+                <div id="datos2"></div>
+            </div>
+            
+        </div>
+        <div class="row">
 
-    <div>
-
-        <table>
-            <thead>
-                <th>Email</th>
-                <th>Nombre</th>
-                <th>Edad</th>
-                <th>Mensaje</th>
-                <th>Reservación</th>
-                <th colspan="3">Acciones</th>
-            </thead>
-            <tbody id="datos2">
-                <br>
-            </tbody>
-
-        </table>
+        </div>
 
     </div>
-
-    <ul>
-        <li><a href="../index.html">Regresar al menu principal</a></li>
-    </ul>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    <script type="text/javascript" src="../scriptClient.js"></script>
-
 </body>
-
 </html>
+

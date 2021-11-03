@@ -88,7 +88,8 @@ function crearMen() {
     }
     if ($("#messageText").val() == "" || $("#doctor").val() == "0" || $("#client").val() == "0") {
         alert("Todods los campos son obligatorios")
-    } else if ($("#messageText").val().length > 250) {
+    } 
+    else if ($("#messageText").val().length > 250) {
         alert("El mensaje debe ser un texto de máximo 250 caracteres");
     } else {
 
@@ -181,14 +182,15 @@ function limpiarCampos() {
 
 function mostrarTabla(misDatos) {
 
-    let tabla = "<table>";
+    let tabla = "<table class='ui center aligned celled table'>" + 
+    "<thead><tr><th>Mensaje</th><th>Doctor</th><th>Cliente</th><th colspan='3'></th></tr></thead>";
     for (i = 0; i < misDatos.length; i++) {
         tabla += "<tr>";
         tabla += "<td>" + misDatos[i].messageText + "</td>";
         tabla += "<td>" + misDatos[i].doctor.name + "</td>";
         tabla += "<td>" + misDatos[i].client.name + "</td>";
-        tabla += '<td><button onclick="borrarMen(' + misDatos[i].idMessage + ')">Borrar</button></td>';
-        tabla += '<td><button onclick="datoEspMen(' + misDatos[i].idMessage + ')">Cargar dato</button></td>';
+        tabla += "<td> <button class='ui yellow button' onclick=' borrarMen(" + misDatos[i].idMessage + ")'>Borrar</button>";
+        tabla += "<td> <button class='ui red button' onclick=' datoEspMen(" + misDatos[i].idMessage + ")'>Cargar dato</button>";
         tabla += "</tr>";
     }
     tabla += "</table>";

@@ -2,72 +2,116 @@
 <html>
 
 <head>
-    <title></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="../scriptDoctor.js"></script>
+    <title>Doctor</title>
+    <link rel="stylesheet" href="../Nueva carpeta/Semantic-UI-CSS-master/semantic.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../jquery-3.1.1.min.js"></script>
+    <script src="../semantic.min.js"></script>
+    <style type="text/css">
+        .full {
+            min-height: 80%;
+            background-image: url('../img/doctor.jpg');
+            background-size: cover;
+        }
 
-    <style>
-        table,
-        th,
-        td {
-            border: 1px solid black;
-            border-collapse: collapse;
+        .pheader.h1.ui.header {
+            margin-top: 20cm;
+            margin-bottom: 0em;
+            font-size: 4em;
+            font-weight: normal;
         }
     </style>
-
-    <meta http-equiv="Access-Control-Allow-Origin" content="*">
-
 </head>
 
 <body>
+    <div class="ui black inverted fixed menu">
+        <a class="item" href="../index.html">
+            <i class="home icon"></i>
+            Inicio
+        </a>
+        <a class="item" href="specialty.html">
+            Especialidad
+        </a>
+        <a class="item" href="doctor.html">
+            Doctor
+        </a>
+        <a class="item" href="client.html">
+            Clientes
+        </a>
+        <a class="item" href="message.html">
+            Mensajes
+        </a>
+        <a class="item" href="reservation.html">
+            Reservaciones
+        </a>
+    </div>
+    <div class="full">
 
-    <h1>Servicios médicos especializados</h1>
-    <h3>Formulario Doctores</h3>
-
-    <div>
-        <type="number" id="id" placeholder="Id"></type>
-        <input type="text" id="name" placeholder="Nombre"><br>
-        <input type="text" id="department" placeholder="Departamento"><br>
-        <input type="number" id="year" placeholder="Año"><br>
-        <input type="text" id="description" placeholder="Descripción"><br>
-        <select id="specialty" class="select-container">
-            <option value="0">Seleccione una Especialidad...</option>
-        </select> <button onclick="traerSpecialty()">Cargar Especialidades</button><br>
-        <br>
-        <button onclick="crearDoctor()">Agregar</button>
-        <button onclick="datosDoctor()">Ver datos</button>
-        <button onclick="actualizarDoctores()">Actualizar</button>
-
+        <br><br><br><br>
     </div>
 
+    <div class="ui divider"></div>
 
-    <div>
-
-        <table>
-            <thead>
-                <th>Nombre</th>
-                <th>Departamento</th>
-                <th>Año</th>
-                <th>Descripción</th>
-                <th>Especialidad</th>
-                <th>Mensajes</th>
-                <th>Id Reservación</th>
-                <th colspan="3">Acciones</th>
-            </thead>
-            <tbody id="datos1">
-                <br>
-            </tbody>
-
-        </table>
-
+    <div class="container__form">
+        <div class="row">
+            <div class="column">
+                <h2>Registro de Doctores</h2>
+                <div class="ui form">
+                    <div>
+                        <type="number" id="id" placeholder="Id"></type>
+                    </div>
+                    <div class="field">
+                        <label for="name">Nombre</label>
+                        <input type="text" id="name" placeholder="Nombre">
+                    </div>
+                    <div class="field">
+                        <label for="department">Departamento</label>
+                        <input type="text" id="department" placeholder="Departamento">
+                    </div>
+                    <div class="field">
+                        <label for="year">Año</label>
+                        <input class= type="number" id="year" placeholder="Año">
+                    </div>
+                    <div class="field">
+                        <label for="description">Descripción</label>
+                        <input type="text" id="description" placeholder="Descripción">
+                    </div>
+                    <div class="field">
+                        <label for="specialty">Especialidad</label>
+                        <select class="ui dropdown" id="specialty">
+                            <option value="0">Seleccione una Especialidad...</option>
+                        </select>
+                    </div>
+                    
+                    <button onclick="crearDoctor()" class="ui purple button" > Agregar Doctor</button>
+                    <button onclick="datosDoctor()" class="ui blue button" >Ver Doctores</button>
+                    <button onclick="actualizarDoctores()" class="ui orange button" >Actualizar Doctor</button>
+                    
+                </div>
+            </div>
+            <div class="column">
+                <h2>Lista de Doctores</h2>
+                <table class="ui celled table">
+                    <div id="datos1"></div>
+                </table>
+            </div>
+        </div>
     </div>
+    <div class="ui grid container">
+        <div class="row">
 
-    <ul>
-        <li><a href="../index.html">Regresar al menu principal</a></li>
-    </ul>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    <script type="text/javascript" src="../scriptDoctor.js"></script>
-
+        </div>
+    </div>
+    <script>
+        $('select.dropdown')
+            .dropdown()
+            ;
+    </script>
 </body>
 
 </html>

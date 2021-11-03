@@ -2,66 +2,99 @@
 <html>
 
 <head>
-    <title></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="../scriptMessage.js"></script>
+    <title>Mensajes</title>
+    <link rel="stylesheet" href="../Nueva carpeta/Semantic-UI-CSS-master/semantic.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../jquery-3.1.1.min.js"></script>
+    <script src="../semantic.min.js"></script>
+    <style type="text/css">
+        .full {
+            min-height: 80%;
+            background-image: url('../img/dos.jpg');
+            background-size: cover;
+        }
 
-    <style>
-        table,
-        th,
-        td {
-            border: 1px solid black;
-            border-collapse: collapse;
+        .pheader.h1.ui.header {
+            margin-top: 20cm;
+            margin-bottom: 0em;
+            font-size: 4em;
+            font-weight: normal;
         }
     </style>
-
-    <meta http-equiv="Access-Control-Allow-Origin" content="*">
-
 </head>
 
 <body>
-
-    <h1>Servicios médicos especializados</h1>
-    <h3>Formulario mensajes</h3>
-
-    <div>
-        <type="number" id="idMessage" placeholder="Id"></type>
-            <input type="text" id="messageText" placeholder="Añade un comentario"><br>
-            <select id="doctor" class="select-container">
-                <option value="0">Seleccione un Doctor...</option>
-            </select> <button onclick="traerDoctor()">Cargar Doctores</button><br>
-            <select id="client" class="select-container">
-                <option value="0">Seleccione un Cliente...</option>
-            </select> <button onclick="traerCliente()">Cargar clientes</button><br>
-            <br>
-            <button onclick="crearMen()">Agregar</button>
-            <button onclick="datosMensaje()">Ver datos</button>
-            <button onclick="actualizarMen()">Actualizar</button>
-    </div>
-
-    <div>
-
-        <table>
-            <thead>
-                <th>Comentario</th>
-                <th>Doctor</th>
-                <th>Cliente</th>
-                <th colspan="3">Acciones</th>
-            </thead>
-            <tbody id="datos3">
-                <br>
-            </tbody>
-        </table>
+    <div class="ui black inverted fixed menu">
+        <a class="item" href="../index.html">
+            <i class="home icon"></i>
+            Inicio
+        </a>
+        <a class="item" href="specialty.html">
+            Especialidad
+        </a>
+        <a class="item" href="doctor.html">
+            Doctor
+        </a>
+        <a class="item" href="client.html">
+            Clientes
+        </a>
+        <a class="item" href="message.html">
+            Mensajes
+        </a>
+        <a class="item" href="reservation.html">
+            Reservaciones
+        </a>
 
     </div>
+    <div class="full">
+    </div>
+    <div class="container__form">
+        <div class="row">
+            <div class="column">
+                <h2>Registro de Mensajes</h2>
+                <div class="ui form">
+                    <div>
+                        <type="number" id="idMessage" placeholder="Id"></type>
+                    </div>
+                    <div class="field">
+                        <label for="messageText">Comentario</label>
+                        <input type="text" id="messageText" placeholder="Añade un comentario">
+                    </div>
+                    <div class="field">
+                        <label for="client">Clientes</label>
+                        <select class="ui dropdown"  id="client">
+                            <option value="0">Seleccione un Cliente...</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="doctor">Doctor</label>
+                        <select class="ui dropdown" id="doctor">
+                            <option value="0">Seleccione un Doctor...</option>
+                        </select>
+                    </div>
+                    <button onclick="crearMen()" class="ui purple button" >Agregar Mensaje</button>
+                    <button onclick="datosMensaje()" class="ui blue button" >Ver Mensajes</button>
+                    <button onclick="actualizarMen()" class="ui orange button" >Actualizar Mensaje</button>
+                </div>
+            </div>
+            <div class="column">
+                <h2>Lista de Mensajes</h2>
+                <div id="datos3"></div>
 
-    <ul>
-        <br>
-        <li><a href="../index.html">Regresar al menu principal</a></li>
-    </ul>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-    <script type="text/javascript" src="../scriptMessage.js"></script>
-
+               
+            </div>
+        </div>
+        <div class="ui grid container">
+            <div class="row">
+    
+        </div>
+    </div>
+       
 </body>
 
 </html>

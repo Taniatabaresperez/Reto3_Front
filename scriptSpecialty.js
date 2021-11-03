@@ -130,6 +130,19 @@ function borrarEsp(idEspecialidad) {
     });
 }
 
+async function validarRelacion(idEspecialidad) {
+    const espe = await $.ajax({
+        url: "http://129.151.123.97:8080/api/Specialty/" + idEspecialidad,
+        type: "GET",
+        dataType: "JSON"
+    });
+    if (espe.doctors.length === 0) {
+        borrarEsp(idEspecialidad);
+    } else {
+        alert("No se puede borrar una especialidad que tenga un doctor")
+    }
+}
+
 function limpiarCampos() {
     $("#id").val("");
     $("#name").val("");
@@ -137,7 +150,8 @@ function limpiarCampos() {
 }
 
 function mostrarTabla(misDatos) {
-    let tabla = "<table>";
+    let tabla = "<table class='ui center aligned celled table'>" + 
+    "<thead><tr><th>Nombre</th><th>Descripcion</th><th>Doctor</th><th colspan='3'></th></tr></thead>";
     for (i = 0; i < misDatos.length; i++) {
         tabla += "<tr>";
         tabla += "<td>" + misDatos[i].name + "</td>";
@@ -151,8 +165,8 @@ function mostrarTabla(misDatos) {
         seleccionar += "</select>"
         tabla += `<td>${seleccionar}</td>`
         tabla += "<td> </td>"
-        tabla += '<td><button onclick="borrarEsp(' + misDatos[i].id + ')">Borrar</button></td>';
-        tabla += '<td><button onclick="datoEspEspecialidad(' + misDatos[i].id + ')">Cargar dato</button></td>';
+        tabla += "<td> <button class='ui yellow button' onclick='validarRelacion(" + misDatos[i].id + ")'>Borrar</button>";
+        tabla += "<td> <button class='ui red button' onclick='datoEspEspecialidad(" + misDatos[i].id + ")'>Cargar dato</button>";
         tabla += "</tr>";
     }
     tabla += "</table>";

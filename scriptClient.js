@@ -160,7 +160,8 @@ function limpiarCampos() {
 
 function mostrarTabla(misDatos) {
 
-    let tabla = "<table>";
+    let tabla = "<table class='ui center aligned celled table'>" + 
+    "<thead><tr><th>Email</th><th>Nombre</th><th>Edad</th><th>Mensaje</th><th>Reservacion</th><th colspan='3'></th></tr></thead>";
     for (i = 0; i < misDatos.length; i++) {
         tabla += "<tr>";
         tabla += "<td>" + misDatos[i].email + "</td>";
@@ -184,8 +185,8 @@ function mostrarTabla(misDatos) {
         tabla += `<td>${selecciona}</td>`
 
         tabla += "<td> </td>"
-        tabla += '<td><button onclick="validarRelacion(' + misDatos[i].idClient + ')">Borrar</button></td>';
-        tabla += '<td><button onclick="datoEspCliente(' + misDatos[i].idClient + ')">Cargar dato</button></td>';
+        tabla += "<td> <button class='ui yellow button' onclick='validarRelacion(" + misDatos[i].idClient + ")'>Borrar</button>";
+        tabla += "<td> <button class='ui red button' onclick='datoEspCliente(" + misDatos[i].idClient + ")'>Cargar dato</button>";
         tabla += "</tr>";
     }
     tabla += "</table>";
